@@ -1,0 +1,267 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080d18">
+  <meta name="description" content="Danttel Phone Manager device diagnostics dashboard">
+  <title>Danttel Phone Manager</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="top-header">
+      <div class="brand">
+        <div class="brand-logo">D</div>
+        <div>
+          <h1>Danttel</h1>
+          <p>PHONE MANAGER</p>
+        </div>
+      </div>
+      <button id="settingsButton" class="icon-button" aria-label="Open settings">⚙</button>
+    </header>
+
+    <main>
+      <!-- HOME -->
+      <section id="homePage" class="page active-page">
+        <div class="welcome-row">
+          <div>
+            <p class="eyebrow">DEVICE OVERVIEW</p>
+            <h2>Your device</h2>
+            <p class="muted">Live information from your browser</p>
+          </div>
+          <button id="refreshButton" class="primary-button">↻ Refresh</button>
+        </div>
+
+        <article class="device-card panel">
+          <div class="device-card-top">
+            <div class="device-icon">▣</div>
+            <span class="status-pill"><span class="status-dot"></span><span id="deviceStatus">Checking device</span></span>
+          </div>
+          <h2 id="deviceName">Your device</h2>
+          <p id="platform" class="muted">Detecting platform...</p>
+          <div class="device-card-footer">
+            <span>Device detected by browser</span>
+            <span class="live-indicator">● LIVE</span>
+          </div>
+        </article>
+
+        <div class="section-heading">
+          <h3>Battery monitor</h3>
+          <span class="muted">Power status</span>
+        </div>
+
+        <article class="panel battery-panel">
+          <div class="battery-main">
+            <div class="battery-ring" id="batteryRing">
+              <div class="battery-ring-inner">
+                <strong id="batteryPercent">--%</strong>
+                <span>Battery</span>
+              </div>
+            </div>
+            <div class="battery-details">
+              <span class="eyebrow">CURRENT STATUS</span>
+              <h3 id="batteryStatus">Checking battery...</h3>
+              <p id="chargingTime" class="muted">Charging time: unavailable</p>
+              <p id="dischargingTime" class="muted">Remaining time: unavailable</p>
+            </div>
+          </div>
+          <div class="progress-track">
+            <div id="batteryBar" class="progress-fill battery-fill" style="width:0%"></div>
+          </div>
+          <p class="small-note" id="batteryNote">Battery readings depend on browser support.</p>
+        </article>
+
+        <div class="section-heading">
+          <h3>Device health</h3>
+          <span class="muted">Quick checks</span>
+        </div>
+
+        <div class="health-grid">
+          <article class="panel health-card">
+            <div class="health-icon purple">▤</div>
+            <p>Browser storage</p>
+            <h3 id="storageInfo">Checking...</h3>
+            <span id="healthStorage" class="health-status">Checking</span>
+          </article>
+          <article class="panel health-card">
+            <div class="health-icon blue">⌁</div>
+            <p>Network</p>
+            <h3 id="networkInfo">Checking...</h3>
+            <span id="healthNetwork" class="health-status">Checking</span>
+          </article>
+          <article class="panel health-card">
+            <div class="health-icon green">▦</div>
+            <p>Processor</p>
+            <h3 id="performanceInfo">Checking...</h3>
+            <span class="health-status">Browser estimate</span>
+          </article>
+          <article class="panel health-card">
+            <div class="health-icon orange">◉</div>
+            <p>Battery API</p>
+            <h3 id="temperatureInfo">Not measured</h3>
+            <span class="health-status">Temperature unavailable</span>
+          </article>
+        </div>
+
+        <article class="panel network-panel">
+          <div class="section-heading inside-heading">
+            <h3>Network diagnostics</h3>
+            <span id="networkDot" class="network-dot"></span>
+          </div>
+          <div class="network-status-row">
+            <div>
+              <p class="muted">Connection status</p>
+              <h3 id="networkStatus">Checking connection...</h3>
+            </div>
+            <span class="network-symbol">⌁</span>
+          </div>
+          <div class="info-row"><span>Connection type</span><strong id="connectionType">Unavailable</strong></div>
+          <div class="info-row"><span>Effective network</span><strong id="effectiveType">Unavailable</strong></div>
+          <div class="info-row"><span>Estimated downlink</span><strong id="downlinkInfo">Unavailable</strong></div>
+          <button id="speedTestButton" class="secondary-button full-button">Run internet speed test</button>
+          <div id="speedTestResult" class="result-box hidden" aria-live="polite">Speed test has not run.</div>
+          <p class="small-note">The speed test transfers data. Use Wi-Fi if your mobile data is limited.</p>
+        </article>
+
+        <article class="panel storage-panel">
+          <div class="section-heading inside-heading">
+            <h3>Browser storage</h3>
+            <span class="muted">Site data only</span>
+          </div>
+          <div class="storage-values">
+            <strong id="storagePercent">--%</strong>
+            <span id="storageDescription" class="muted">Reading browser storage estimate...</span>
+          </div>
+          <div class="progress-track">
+            <div id="storageBar" class="progress-fill storage-fill" style="width:0%"></div>
+          </div>
+          <p class="small-note">This is not your phone's total internal storage.</p>
+        </article>
+      </section>
+
+      <!-- STATS -->
+      <section id="statsPage" class="page hidden">
+        <div class="page-intro">
+          <p class="eyebrow">PERFORMANCE CENTRE</p>
+          <h2>Device statistics</h2>
+          <p class="muted">Available browser-reported measurements</p>
+        </div>
+
+        <div class="stats-grid">
+          <article class="panel stat-card"><span>Battery level</span><strong id="statsBattery">--</strong><p>Battery API</p></article>
+          <article class="panel stat-card"><span>Network</span><strong id="statsNetwork">--</strong><p>Connectivity</p></article>
+          <article class="panel stat-card"><span>CPU cores</span><strong id="statsCPU">--</strong><p>Logical cores reported</p></article>
+          <article class="panel stat-card"><span>Screen</span><strong id="statsScreen">--</strong><p>Display dimensions</p></article>
+        </div>
+
+        <article class="panel">
+          <div class="section-heading inside-heading"><h3>Storage breakdown</h3><span class="muted">Browser estimate</span></div>
+          <div class="info-row"><span>Origin data used</span><strong id="storageUsed">Unavailable</strong></div>
+          <div class="info-row"><span>Estimated quota</span><strong id="storageQuota">Unavailable</strong></div>
+          <div class="info-row"><span>Estimated free quota</span><strong id="storageFree">Unavailable</strong></div>
+          <p class="small-note">Quota is space the browser may allow this site to use, not free phone storage.</p>
+        </article>
+
+        <article class="panel">
+          <div class="section-heading inside-heading"><h3>Performance indicators</h3></div>
+          <div class="info-row"><span>Logical CPU cores</span><strong id="cpuCores">Unavailable</strong></div>
+          <div class="info-row"><span>Approximate device memory</span><strong id="deviceMemory">Unavailable</strong></div>
+          <div class="info-row"><span>Network downlink estimate</span><strong id="statsDownlink">Unavailable</strong></div>
+          <div class="info-row"><span>Round-trip latency estimate</span><strong id="networkRtt">Unavailable</strong></div>
+        </article>
+
+        <article class="panel">
+          <div class="section-heading inside-heading"><h3>Diagnostic summary</h3></div>
+          <div id="healthSummary" class="summary-text">Run a refresh to update the available measurements.</div>
+        </article>
+      </section>
+
+      <!-- DEVICE -->
+      <section id="devicePage" class="page hidden">
+        <div class="page-intro">
+          <p class="eyebrow">HARDWARE & SOFTWARE</p>
+          <h2>Device details</h2>
+          <p class="muted">Information your browser makes available</p>
+        </div>
+
+        <article class="panel device-details-panel">
+          <div class="large-device-icon">▣</div>
+          <h3 id="deviceDetails">Device information</h3>
+          <p class="muted">Detected environment</p>
+          <div class="info-row"><span>Platform</span><strong id="devicePlatform">Unavailable</strong></div>
+          <div class="info-row"><span>Browser</span><strong id="browserInfo">Unavailable</strong></div>
+          <div class="info-row"><span>Screen resolution</span><strong id="screenInfo">Unavailable</strong></div>
+          <div class="info-row"><span>Viewport</span><strong id="viewportInfo">Unavailable</strong></div>
+          <div class="info-row"><span>Pixel ratio</span><strong id="pixelRatio">Unavailable</strong></div>
+          <div class="info-row"><span>CPU cores</span><strong id="deviceCPU">Unavailable</strong></div>
+          <div class="info-row"><span>Memory estimate</span><strong id="deviceMemoryDetails">Unavailable</strong></div>
+          <div class="info-row"><span>Language</span><strong id="deviceLanguage">Unavailable</strong></div>
+          <div class="info-row"><span>Online status</span><strong id="deviceOnline">Unavailable</strong></div>
+        </article>
+
+        <article class="panel">
+          <h3>Privacy note</h3>
+          <p class="muted">This page reads browser-exposed information. It cannot freely inspect installed apps, private files, exact hardware temperature, or every system setting.</p>
+        </article>
+
+        <button id="exportReportButton" class="primary-button full-button">Export device report</button>
+        <p id="exportStatus" class="small-note" aria-live="polite"></p>
+      </section>
+
+      <!-- SETTINGS -->
+      <section id="settingsPage" class="page hidden">
+        <div class="page-intro">
+          <p class="eyebrow">PREFERENCES</p>
+          <h2>Settings</h2>
+          <p class="muted">Manage your dashboard</p>
+        </div>
+
+        <article class="panel settings-card">
+          <div class="setting-row">
+            <div><h3>Dashboard theme</h3><p class="muted">This version uses the premium dark theme.</p></div>
+            <span class="setting-symbol">☾</span>
+          </div>
+          <div class="setting-row">
+            <div><h3>Automatic refresh</h3><p class="muted">Refresh diagnostic readings when requested.</p></div>
+            <label class="switch"><input id="autoRefreshToggle" type="checkbox" checked><span class="switch-slider"></span></label>
+          </div>
+          <div class="setting-row">
+            <div><h3>Refresh interval</h3><p class="muted">Choose how often supported readings update.</p></div>
+            <select id="refreshInterval" class="settings-select">
+              <option value="15">15 seconds</option>
+              <option value="30" selected>30 seconds</option>
+              <option value="60">60 seconds</option>
+            </select>
+          </div>
+        </article>
+
+        <article class="panel">
+          <h3>Data and privacy</h3>
+          <p class="muted">No system-level permissions are needed for the basic dashboard. Browser capabilities vary by browser and device.</p>
+          <button id="settingsRefreshButton" class="secondary-button full-button">Refresh diagnostics now</button>
+          <button id="settingsExportButton" class="secondary-button full-button">Export device report</button>
+        </article>
+
+        <article class="panel about-card">
+          <div class="brand-logo">D</div>
+          <h3>Danttel Phone Manager</h3>
+          <p class="muted">Device insights, clearly presented.</p>
+          <span class="version-tag">VERSION 2.0</span>
+        </article>
+      </section>
+    </main>
+
+    <!-- KEEP THESE FOUR NAV ITEMS IN THIS ORDER -->
+    <nav class="bottom-nav" aria-label="Main navigation">
+      <button class="nav-item active" data-page="0" aria-label="Home"><span class="nav-icon">⌂</span><span>Home</span></button>
+      <button class="nav-item" data-page="1" aria-label="Stats"><span class="nav-icon">▥</span><span>Stats</span></button>
+      <button class="nav-item" data-page="2" aria-label="Device"><span class="nav-icon">▣</span><span>Device</span></button>
+      <button class="nav-item" data-page="3" aria-label="Settings"><span class="nav-icon">⚙</span><span>Settings</span></button>
+    </nav>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
